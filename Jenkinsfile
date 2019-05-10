@@ -23,23 +23,27 @@ pipeline {
         sh "docker tag raspi_cpu leonhess/raspi_cpu:${env.BUILD_NUMBER}"
       }
     }
-    stage('Push to local Registry') {
-      agent {
-        label "Pi_3"
-      }
-      steps {
-        sh "docker push fx8350:5000/raspi_cpu:${env.BUILD_NUMBER}"
-        sh "docker push fx8350:5000/raspi_cpu:latest"
-      }
-    }
-    stage('Push to DockerHub') {
-      agent {
-        label "Pi_3"
-      }
-      steps {
-        withDockerRegistry([credentialsId: "dockerhub", url: ""]) {
-          sh "docker push leonhess/raspi_cpu:${env.BUILD_NUMBER}"
-          sh "docker push leonhess/raspi_cpu:latest"
+    stage('Push to Registries') {
+      parallel {
+        stage('Push to local Registry') {
+          agent {
+            label "Pi_3"
+          }
+          steps {
+            sh "docker push fx8350:5000/raspi_cpu:${env.BUILD_NUMBER}"
+            sh "docker push fx8350:5000/raspi_cpu:latest"
+          }
+        }
+        stage('Push to DockerHub') {
+          agent {
+            label "Pi_3"
+          }
+          steps {
+            withDockerRegistry([credentialsId: "dockerhub", url: ""]) {
+              sh "docker push leonhess/raspi_cpu:${env.BUILD_NUMBER}"
+              sh "docker push leonhess/raspi_cpu:latest"
+            }
+          }
         }
       }
     }
