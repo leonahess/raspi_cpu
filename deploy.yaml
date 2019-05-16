@@ -1,0 +1,11 @@
+- hosts: database
+  tasks:
+    - name: Running the Container
+      docker_container:
+        image: fx8350:5000/raspi_cpu:latest
+        name: raspi_cpu
+        state: started
+        privileged: yes
+        restart_policy: always
+        force_kill: yes
+        hostname: "{{ ansible_hostname }}"

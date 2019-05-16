@@ -63,12 +63,11 @@ pipeline {
         label "master"
       }
       steps {
-        sshagent(credentials: ['d4eb3f5d-d0f5-4964-8bad-038f0d774551']) {
-          sh "ssh -o StrictHostKeyChecking=no pi@leon-raspi-cluster-3 docker kill raspi_cpu"
-          sh "ssh -o StrictHostKeyChecking=no pi@leon-raspi-cluster-3 docker rm raspi_cpu"
-          sh "ssh -o StrictHostKeyChecking=no pi@leon-raspi-cluster-3 docker run --restart always -d --name=raspi_cpu --privileged fx8350:5000/raspi_cpu:latest"
+        ansiblePlaybook(
+          playbook: 'deploy.yml',
+          credentialsId: 'd4eb3f5d-d0f5-4964-8bad-038f0d774551'
+          )
         }
       }
     }
   }
-}
