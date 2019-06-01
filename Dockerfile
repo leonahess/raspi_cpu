@@ -2,8 +2,8 @@ FROM python:alpine
 
 ADD app ./app
 ADD requirements.txt .
-ADD config.py
-ADD smarthome_raspi.py
+ADD config.py .
+ADD smarthome_raspi.py .
 
 WORKDIR .
 
