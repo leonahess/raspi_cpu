@@ -93,9 +93,6 @@ class RaspiTemp:
     def write(self, jsons):
 
         try:
-            client.write_points(jsons, protocol="json")
+            client.write_points(jsons, protocol="json", retention_policy=config.influx_retention_policy)
         except Exception as e:
             print("Write exception: {}".format(e))
-
-
-
